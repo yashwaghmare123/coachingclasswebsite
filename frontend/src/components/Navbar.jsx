@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Menu, X, BookOpen, Users, Award, Phone, Mail, MapPin, Star, Zap, Target, Trophy } from 'lucide-react';
+import { ChevronDown, Menu, X, BookOpen, Users, Award, Phone, Mail, MapPin, Star, Zap, Target, Trophy, User, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -149,16 +151,35 @@ const Navbar = () => {
 
             {/* Revolutionary CTA Button */}
             <div className="hidden lg:flex items-center space-x-4">
-              <a 
-                href="/admission" 
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
-                <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
-                  <span>Join Now</span>
-                  <Zap className="w-4 h-4 animate-pulse" />
+              {isAuthenticated ? (
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-700 font-medium">
+                    Hi, {user?.fullName?.split(' ')[0] || 'User'}!
+                  </span>
+                  <Link to="/profile" className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                    <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+                      <User className="w-4 h-4" />
+                      <span>Profile</span>
+                    </div>
+                  </Link>
+                  <button 
+                    onClick={logout}
+                    className="text-gray-600 hover:text-red-600 p-2 rounded-full hover:bg-red-50 transition-all duration-300"
+                    title="Logout"
+                  >
+                    <LogOut className="w-5 h-5" />
+                  </button>
                 </div>
-              </a>
+              ) : (
+                <Link to="/login" className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                  <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+                    <span>Login</span>
+                    <Zap className="w-4 h-4 animate-pulse" />
+                  </div>
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu button with animation */}

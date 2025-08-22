@@ -8,6 +8,9 @@ import Faculty from './components/Faculty';
 import Results from './components/Results';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Login from './components/Login';
+import UserProfile from './components/UserProfile';
+import { AuthProvider } from './context/AuthContext';
 
 const Home = () => (
   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -59,20 +62,24 @@ const ContactPage = () => (
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/faculty" element={<FacultyPage />} />
-          <Route path="/results" element={<ResultsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <AuthProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/faculty" element={<FacultyPage />} />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<UserProfile />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
+    </AuthProvider>
   );
 };
 
